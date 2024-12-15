@@ -82,6 +82,15 @@ This project is an Anime Search Engine that supports fuzzy search, developed fro
      ```bash
      !pip install fastapi uvicorn nltk rapidfuzz pickle-mixin numpy
      ```
+     - If you don't want to use the java backend Modify this line, in addition to getting the pdfs names as result you you also get the title and description and other fields that you can 
+       use directly in the front(after modifing the search-page.tsx in the front):
+     ```python
+     doc_names = [anime['doc_name'] for anime in animes_json]
+     ```
+     to:
+     ```python
+     doc_names = animes_json
+     ```
    - Run all cells to start the FastAPI server.
 
 2. **Using Postman:**
@@ -98,7 +107,8 @@ This project is an Anime Search Engine that supports fuzzy search, developed fro
 2. **Run the Search API:**
    - Open `animes_search_engine/search_engine/search_api.ipynb`.
    - Run all cells to start the FastAPI server.
-   - Modify the line:
+  - If you don't want to use the java backend Modify this line, in addition to getting the pdfs names as result you you also get the title and description and other fields that you can use 
+    directly in the front(after modifing the search-page.tsx in the front):
      ```python
      doc_names = [anime['doc_name'] for anime in animes_json]
      ```
