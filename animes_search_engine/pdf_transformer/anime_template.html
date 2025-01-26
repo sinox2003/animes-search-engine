@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title or "Anime Details" }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            scale: 0.7;
+        }
+
+
+        .container:nth-child(1) {
+            height: 38cm;
+        }
+
+        .titles {
+            line-height: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .title {
+            line-height: normal;
+            font-size: 2.2em;
+        }
+
+        .subtitle {
+            line-height: normal;
+            font-size: 1.5em;
+            color: #B3B3B3;
+        }
+
+        .anime-img {
+            display: block;
+            margin: 0 auto;
+            border-radius: 8px;
+        }
+
+        .score-rank {
+            display: -webkit-box;
+            /* wkhtmltopdf uses this one */
+            display: flex;
+            -webkit-box-pack: justify;
+            width: 500px;
+            font-size: 20px;
+        }
+
+        .score-rank-box {
+            display: -webkit-box;
+            /* wkhtmltopdf uses this one */
+            display: flex;
+            -webkit-box-pack: center;
+            margin: 20px 0;
+        }
+
+        .score-rank-font {
+            font-weight: bolder;
+            font-family: tahoma;
+        }
+
+        .description {
+            text-align: justify;
+        }
+
+
+
+        .details {
+            margin: 60px 0;
+        }
+
+        .details h2,
+        .container>h2 {
+            font-size: 1.4em;
+            border-bottom: 2px solid #333;
+            padding-bottom: 5px;
+        }
+
+        .details table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .details th,
+        .details td {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .characters {
+            display: -webkit-box;
+            display: flex;
+            width: 100%;
+            flex-wrap: wrap;
+            -webkit-box-pack: justify;
+            justify-content: space-between;
+        }
+
+        .characters-list {
+            width: 46%;
+        }
+
+        .characters-list:nth-child(2) {
+            margin-right: 2%;
+        }
+
+        .character {
+            display: flex;
+            justify-content: space-between;
+            -webkit-box-pack: justify;
+            display: -webkit-box;
+            font-size: 13px;
+            align-items: center;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            padding: 10px;
+            padding-top: calc((100% - 80px) / 2);
+            background-color: #f9f9f9;
+        }
+
+        .character_left,
+        .character_right {
+            display: flex;
+            -webkit-box-pack: center;
+            display: -webkit-box;
+            align-items: center;
+
+        }
+
+        .character-img {
+            width: 60px;
+            height: 80px;
+            border-radius: 8px;
+            margin-right: 10px;
+        }
+
+        .character-name,
+        .voice-actor-name {
+            font-weight: bold;
+
+        }
+
+        .character-role,
+        .voice-actor-nationality {
+            color: #555;
+            font-weight: normal;
+        }
+
+        .voice-actor {
+            text-align: right;
+            margin-right: 10px;
+            margin-top: 46px;
+            line-height: 7px
+        }
+
+        .character-info {
+            margin-top: 7px;
+            text-align: left;
+            margin-left: 10px;
+            line-height: 7px
+        }
+
+
+
+
+
+        .voice-actor-img {
+            width: 60px;
+            height: 80px;
+            border-radius: 8px;
+        }
+
+
+        .footer {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 0.9em;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="titles">
+
+            <h1 class="title">{{ title }}</h1>
+
+            {% if eng_title %}
+            <h3 class="subtitle">{{ eng_title }}</h3>
+            {% endif %}
+        </div>
+
+        {% if anime_img %}
+
+        <img src="{{ anime_img }}" alt="{{ title }}" class="anime-img">
+
+        {% endif %}
+
+        <div class="score-rank-box">
+            <div class="score-rank">
+                <p>
+                    Score:
+                    <span class="score-rank-font">{{ score }}</span>
+                </p>
+                <p>
+                    Rank:
+                    <span class="score-rank-font">#{{ rank }}</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="description">
+            {% for i in description %}
+            <p>{{ i }}</p>
+            {% endfor %}
+        </div>
+
+        <div class="details">
+            <h2>Anime Details</h2>
+            <table>
+                {% if episodes %}
+                <tr>
+                    <th>Episodes</th>
+                    <td>{{ episodes }}</td>
+                </tr>
+                {% endif %}
+                {% if status %}
+                <tr>
+                    <th>Status</th>
+                    <td>{{ status }}</td>
+                </tr>
+                {% endif %}
+
+                <!-- cas ou aired est liste de start_date et end_date -->
+                <!-- {% if aired|length > 1 %}
+                <tr>
+                    <th>Aired</th>
+                    <td>{{ aired.start_date }} to {{ aired.end_date}}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <th>Aired</th>
+                    <td>{{ aired.start_date }}</td>
+                </tr>
+                {% endif %} -->
+
+                
+                {% if aired %}
+                <tr>
+                    <th>Aired</th>
+                    <td>{{ aired }}</td>
+                </tr>
+                {% endif %}
+                {% if premiered %}
+                <tr>
+                    <th>Premiered</th>
+                    <td>{{ premiered }}</td>
+                </tr>
+                {% endif %}
+                {% if broadcast %}
+                <tr>
+                    <th>Broadcast</th>
+                    <td>{{ broadcast }}</td>
+                </tr>
+                {% endif %}
+                {% if licensors %}
+                <tr>
+                    <th>Licensors</th>
+                    <td>{{ licensors }}</td>
+                </tr>
+                {% endif %}
+                {% if studios %}
+                <tr>
+                    <th>Studios</th>
+                    <td>{{ studios }}</td>
+                </tr>
+                {% endif %}
+                {% if source %}
+                <tr>
+                    <th>Source</th>
+                    <td>{{ source }}</td>
+                </tr>
+                {% endif %}
+                {% if genres %}
+                <tr>
+                    <th>Genres</th>
+                    <td>{{ ', '.join(genres) }}</td>
+                </tr>
+                {% endif %}
+                {% if demographic %}
+                <tr>
+                    <th>Demographic</th>
+                    <td>{{ demographic }}</td>
+                </tr>
+                {% endif %}
+                {% if duration_per_ep %}
+                <tr>
+                    <th>Duration</th>
+                    <td>{{ duration_per_ep }}</td>
+                </tr>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+    <div class="container">
+        <h2>Characters</h2>
+        <div class="characters">
+
+            <div class="characters-list">
+                {% for character in characters_1 %}
+                <div class="character">
+                    <div class="character_left">
+                        <img src="{{ character.character_img }}" alt="{{ character.character_name }}"
+                            class="character-img">
+                        <div class="character-info">
+
+                            <p class="character-name">{{ character.character_name }}</p>
+
+                            <small class="character-role">{{ character.character_role }}</small>
+                        </div>
+                    </div>
+                    <div class="character_right">
+                        <div class="voice-actor">
+                            <p class="voice-actor-name">{{ character.voice_actor_name }}</p>
+                            <small class="voice-actor-nationality">{{ character.voice_actor_nationality }}</small>
+                        </div>
+                        <img src="{{ character.voice_actor_img }}" alt="{{ character.voice_actor_name }}"
+                            class="voice-actor-img">
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="characters-list">
+                {% for character in characters_2 %}
+                <div class="character">
+                    <div class="character_left">
+                        <img src="{{ character.character_img }}" alt="{{ character.character_name }}"
+                            class="character-img">
+                        <div class="character-info">
+
+                            <p class="character-name">{{ character.character_name }}</p>
+
+                            <small class="character-role">{{ character.character_role }}</small>
+                        </div>
+                    </div>
+                    <div class="character_right">
+                        <div class="voice-actor">
+
+                            <p class="voice-actor-name">{{ character.voice_actor_name }}</p>
+                            <small class="voice-actor-nationality">{{ character.voice_actor_nationality }}</small>
+                        </div>
+                        <img src="{{ character.voice_actor_img }}" alt="{{ character.voice_actor_name }}"
+                            class="voice-actor-img">
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Data source: MyAnimeList</p>
+        </div>
+    </div>
+</body>
+
+</html>
