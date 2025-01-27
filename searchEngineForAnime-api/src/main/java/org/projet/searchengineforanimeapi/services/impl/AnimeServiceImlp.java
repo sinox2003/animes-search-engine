@@ -13,15 +13,15 @@ import org.projet.searchengineforanimeapi.repositories.UserRepo;
 import org.projet.searchengineforanimeapi.services.AnimeService;
 import org.projet.searchengineforanimeapi.utility.AnimeFilter;
 import org.projet.searchengineforanimeapi.utility.AnimeSpecification;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.repository.support.Repositories;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import org.springframework.data.domain.Pageable;
 import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -53,9 +53,10 @@ public class AnimeServiceImlp implements AnimeService {
     }
 
     @Override
+    @Cacheable("searchAnimes")
     public SearchResponse search(String query, Long id , int pageNumber,int pageSize) {
 
-        String url = "http://127.0.0.1:8000/search?query=" + query;
+        String url = "https://anime-search-engine.proudtree-eab701bf.germanywestcentral.azurecontainerapps.io/search?query=" + query;
         Set<Long> saved_animes = Set.of();
         List<AnimeDTO> animeList = new ArrayList<>();
         SearchResult docs;
@@ -127,6 +128,7 @@ public class AnimeServiceImlp implements AnimeService {
 
 
     @Override
+    @Cacheable("animes")
     public Page<AnimeDTO> getFilterePaginatedAnime(AnimeFilter animeFilter, Pageable pageable, Long userId){
         Specification<Anime> specification = AnimeSpecification.withFilter(animeFilter);
         Page<AnimeDTO> animeList = animeRepository.findAll(specification,pageable).map(AnimeMapper::toDto);
