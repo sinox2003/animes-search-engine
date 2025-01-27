@@ -115,10 +115,6 @@ export const SearchPage = () => {
 		}
 	};
 
-	useEffect(() => {
-		console.log(data)
-	}, [data]);
-
 	const getSearchResults = async () => {
 		setLoading(false);
 		try {
@@ -215,7 +211,6 @@ export const SearchPage = () => {
 	};
 
 	const renderCorrectQuery = () => {
-		console.log(query.toLowerCase())
 		if (!loading || !data.correct_query || !Array.isArray(data.correct_query) ||
 			data.correct_query.join(" ") === query.toLowerCase()) {
 			return <div className="px-10 text my-9 text-red-600" />;
